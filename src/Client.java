@@ -1,36 +1,25 @@
-import java.io.IOException;
-import java.net.Socket;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.net.*;
+import java.io.*;
 
-public class Client{
-    private String nome;
-    private String colore; 
-    private Socket socket;
-    
-    public Client(String nomeDefault, String coloreDefault){
-        nome = nomeDefault;
-        colore = coloreDefault;
-    }
-    public Client(String nome){
-        this.nome = nome;
-    }
-    public void connetti(String nomeServer, int portaServer){
-        try {
-            socket = new Socket(nomeServer, portaServer);
-            System.out.println("1. Connessione avvenuta.");
-        } catch (IOException ex) {
-            Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
-            System.out.err("Connessione non riuscita.");
+public class Client {
+    public static void main(String[] args) throws IOException {
+        String hostName = "localhost";
+        int port = 12345;
+
+        try (Socket socket = new Socket(hostName, port);
+             PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+             BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+             BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in))) {
+
+            String userInput;
+            while ((userInput = stdIn.readLine()) != null) {
+                out.println(userInput);
+                System.out.println("Server: " + in.readLine());
+
+                if (userInput.equalsIgnoreCase("exit")) {
+                    break;
+                }
+            }
         }
-    }
-    public void scrivi(){
-
-    }
-    public void leggi(){
-
-    }
-    public void chiudi(){
-        
     }
 }

@@ -1,48 +1,21 @@
-
 import java.io.IOException;
-import java.net.ServerSocket;
-import java.net.Socket;
+import java.net.*;
 
 public class Server {
+    public static void main(String[] args) throws IOException {
+        int port = 12345;
+        ServerSocket serverSocket = new ServerSocket(port);
+        System.out.println("Server in ascolto sulla porta " + port);
 
-    private ServerSocket serverSocket;
-    private Socket clientSocket;
-    private int porta;
-
-    public Server(int porta) {
-        this.porta = porta;
         try {
-            //realizza la primitiva listen e bind
-            serverSocket = new ServerSocket(porta);
-            System.out.println("Il server è in ascolto");
-        } catch (IOException e) {
-            System.err.println("Server non in ascolto " + e);
+            while (true) {
+                Socket clientSocket = serverSocket.accept();
+                System.out.println("Connessione accettata da " + clientSocket.getRemoteSocketAddress());
+                ClientHandler clientHandler = new ClientHandler(clientSocket);
+                new Thread(clientHandler).start();
+            }
+        } finally {
+            serverSocket.close();
         }
-
-    }
-
-    public Socket attendi() {
-        try {
-            clientSocket = serverSocket.accept();
-        } catch (IOException e) {
-            System.err.println(e);
-        }
-        return clientSocket;
-    }
-
-    public void scrivi() {
-
-    }
-
-    public void leggi() {
-
-    }
-
-    public void chiudi() {
-
-    }
-
-    public void termina() {
-
     }
 }
