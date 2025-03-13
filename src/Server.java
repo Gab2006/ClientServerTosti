@@ -30,19 +30,35 @@ public class Server {
         return clientSocket;
     }
 
-    public void scrivi() {
-
+    public void scrivi(String messaggio) {
+        output.println(messaggio);
     }
 
     public void leggi() {
-
+        try {
+            String mess = input.readLine();
+            System.out.println("Messaggio ricevuto: " + mess);
+        } catch (IOException e) {
+            System.err.println("Errore nella lettura del messaggio.");
+        }
     }
 
     public void chiudi() {
-
+        try {
+            clientSocket.close();
+            System.out.println("Socket chiuso.");
+        } catch (IOException e) {
+            System.err.println("Errore nella chiusura del socket.");
+        }
     }
 
-    public void termina() {
 
+    public void termina() {
+        try{
+            serverSocket.close();
+            System.out.println("Server chiuso");
+        } catch (IOException e){
+            System.out.println("Errore nella chiusura del server");
+        }
     }
 }
