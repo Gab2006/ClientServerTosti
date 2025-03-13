@@ -25,12 +25,30 @@ public class Client{
         }
     }
     public void scrivi(){
-
+        try {
+            BufferedReader buff = new BufferedReader(new InputStreamReader(System.in));
+            System.out.print("Inserisci messaggio: ");
+            String mess= buff.readLine();
+            output.println(mess);
+        } catch (IOException e) {
+            System.err.println("Errore nell'invio del messaggio.");
+        }
     }
+    
     public void leggi(){
-
+        try {
+            String risposta = input.readLine();
+            System.out.println(risposta);
+        } catch (IOException e) {
+            System.err.println("Errore nella lettura della risposta.");
+        }
     }
-    public void chiudi(){
-        
+public void chiudi(){
+        try {
+            socket.close();
+            System.out.println("Socket chiuso.");
+        } catch (IOException e) {
+            System.err.println("Errore nella chiusura del socket.");
+        }
     }
 }
